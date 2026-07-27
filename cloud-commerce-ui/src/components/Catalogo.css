@@ -1,0 +1,465 @@
+.catalogo-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.catalogo-layout {
+  display: flex;
+  flex: 1;
+}
+
+.catalogo-loading,
+.catalogo-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  font-size: 1.25rem;
+  color: #6b7280;
+}
+
+.catalogo-error {
+  color: #dc2626;
+}
+
+.categorias-sidebar {
+  width: 260px;
+  padding: 1.5rem;
+  background: white;
+  border-right: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+.categorias-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.categorias-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.categoria-btn {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  text-align: left;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.categoria-btn:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.categoria-btn.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.catalogo-main {
+  flex: 1;
+  padding: 2rem;
+}
+
+.catalogo-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+.catalogo-empty {
+  text-align: center;
+  color: #6b7280;
+  padding: 3rem;
+}
+
+.catalogo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.producto-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.producto-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
+}
+
+.producto-image-container {
+  position: relative;
+  height: 200px;
+  background: #f9fafb;
+  overflow: hidden;
+}
+
+.producto-imagen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.producto-card:hover .producto-imagen {
+  transform: scale(1.05);
+}
+
+.producto-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d1d5db;
+}
+
+.producto-categoria-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 0.35rem 0.75rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.producto-info {
+  padding: 1.25rem;
+}
+
+.producto-nombre {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.producto-descripcion {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.producto-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.producto-precio-stock {
+  display: flex;
+  flex-direction: column;
+}
+
+.producto-precio {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #111827;
+}
+
+.producto-stock {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.producto-stock.sin-stock {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.producto-stock.bajo-stock {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+.btn-agregar-carrito {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+}
+
+.btn-agregar-carrito:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+}
+
+.btn-agregar-carrito:disabled {
+  background: linear-gradient(135deg, #9ca3b8 0%, #64748b 100%);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-agregar-carrito svg {
+  flex-shrink: 0;
+}
+
+.producto-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.producto-modal-content {
+  background: white;
+  border-radius: 20px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  animation: modalSlideUp 0.3s ease-out;
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.producto-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: #f3f4f6;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.producto-modal-close:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.producto-modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.producto-modal-image {
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.producto-modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.producto-modal-image-placeholder {
+  color: #d1d5db;
+}
+
+.producto-modal-details {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.producto-modal-categoria {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  background: #e0e7ff;
+  color: #3730a3;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  width: fit-content;
+}
+
+.producto-modal-nombre {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.producto-modal-descripcion {
+  font-size: 1rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.producto-modal-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.producto-modal-precio,
+.producto-modal-stock,
+.producto-modal-proveedor {
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.producto-modal-info .label,
+.producto-modal-proveedor .label {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.producto-modal-info .value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.producto-modal-precio .value {
+  color: #059669;
+  font-size: 1.5rem;
+}
+
+.producto-modal-proveedor {
+  grid-column: span 2;
+}
+
+.btn-agregar-carrito-large {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1rem;
+  margin-top: auto;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+
+.btn-agregar-carrito-large:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+}
+
+.btn-agregar-carrito-large:disabled {
+  background: linear-gradient(135deg, #9ca3b8 0%, #64748b 100%);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+@media (max-width: 768px) {
+  .catalogo-layout {
+    flex-direction: column;
+  }
+
+  .categorias-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .categorias-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .producto-modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .producto-modal-image {
+    min-height: 250px;
+  }
+
+  .producto-modal-details {
+    padding: 1.5rem;
+  }
+
+  .producto-modal-info {
+    grid-template-columns: 1fr;
+  }
+
+  .producto-modal-proveedor {
+    grid-column: span 1;
+  }
+}

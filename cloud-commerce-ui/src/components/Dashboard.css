@@ -1,0 +1,213 @@
+.dashboard {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  font-size: 1.25rem;
+  color: #6b7280;
+}
+
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-subtitle {
+  color: #6b7280;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.dashboard-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
+}
+
+.dashboard-card-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dashboard-card-icon.clientes {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #2563eb;
+}
+
+.dashboard-card-icon.proveedores {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #16a34a;
+}
+
+.dashboard-card-icon.productos {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #d97706;
+}
+
+.dashboard-card-icon.ventas {
+  background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+  color: #9333ea;
+}
+
+.dashboard-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-card-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1;
+}
+
+.dashboard-card-label {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.dashboard-card-arrow {
+  color: #9ca3af;
+  transition: color 0.2s ease;
+}
+
+.dashboard-card:hover .dashboard-card-arrow {
+  color: #6b7280;
+}
+
+.dashboard-quick-actions {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  margin-bottom: 2rem;
+}
+
+.dashboard-quick-actions h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.dashboard-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dashboard-action-btn:hover {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.dashboard-action-btn svg {
+  flex-shrink: 0;
+}
+
+.dashboard-activity {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.dashboard-activity h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+.activity-list {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.activity-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.85rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.activity-item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.activity-dot {
+  width: 12px;
+  height: 12px;
+  margin-top: 0.45rem;
+  border-radius: 50%;
+}
+
+.activity-dot.bg-primary {
+  background: #2563eb;
+  box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.08);
+}
+
+.activity-dot.bg-success {
+  background: #16a34a;
+  box-shadow: 0 0 0 5px rgba(22, 163, 74, 0.08);
+}
+
+.activity-dot.bg-warning {
+  background: #d97706;
+  box-shadow: 0 0 0 5px rgba(217, 119, 6, 0.08);
+}

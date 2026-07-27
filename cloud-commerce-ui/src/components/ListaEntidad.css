@@ -1,0 +1,208 @@
+.view-container {
+  padding: 32px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  min-height: calc(100vh - 120px);
+  animation: fadeIn 0.4s ease-out;
+}
+
+.view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e2e8f0;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.view-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.view-title::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 28px;
+  background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 2px;
+}
+
+.view-loading,
+.view-error {
+  padding: 60px;
+  text-align: center;
+  color: #64748b;
+  font-size: 1.1rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin: 24px;
+}
+
+.view-error {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+.form-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  animation: slideDown 0.3s ease-out;
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea {
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-family: inherit;
+}
+
+.form-container input:focus,
+.form-container select:focus,
+.form-container textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+  background-color: white;
+}
+
+.form-container input::placeholder {
+  color: #94a3b8;
+}
+
+.form-container input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.form-container input[type="number"]::-webkit-inner-spin-button,
+.form-container input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.form-container button[type="submit"] {
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 14px 32px;
+  width: fit-content;
+}
+
+.table-wrapper {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.data-table th {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  color: #0f172a;
+  font-weight: 700;
+  padding: 16px 20px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.data-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.data-table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover td:first-child {
+  border-left: 3px solid #3b82f6;
+}
+
+.data-table .actions-cell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background: linear-gradient(135deg, #f8fafc 0%, #e8f4fd 100%) !important;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.form-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #3b82f6;
+  border-radius: 4px;
+}
+
+.form-checkbox span {
+  font-size: 0.95rem;
+  color: #374151;
+  user-select: none;
+}
