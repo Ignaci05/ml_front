@@ -6,6 +6,7 @@ export function Navbar({ activeTab, onTabChange, user, onLogout, onLoginClick, o
   const adminTabs = [
     { id: 'dashboard', label: 'Dashboard' },
     { id: 'catalogo', label: 'Catálogo' },
+    { id: 'ventas', label: 'Ventas' },
     { id: 'categorias', label: 'Categorías' },
     { id: 'clientes', label: 'Clientes' },
     { id: 'proveedores', label: 'Proveedores' },
@@ -14,6 +15,7 @@ export function Navbar({ activeTab, onTabChange, user, onLogout, onLoginClick, o
 
   const clientTabs = [
     { id: 'catalogo', label: 'Catálogo' },
+    { id: 'mis-compras', label: 'Mis Compras' },
   ];
 
   const visibleTabs = isAdmin ? adminTabs : clientTabs;

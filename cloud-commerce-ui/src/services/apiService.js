@@ -271,7 +271,10 @@ export const apiService = {
             headers: getHeaders(),
             body: JSON.stringify(venta),
         });
-        if (!response.ok) throw new Error('Error al crear la venta');
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Error al crear la venta');
+        }
         return await handleResponse(response);
     },
 
@@ -282,6 +285,32 @@ export const apiService = {
             body: JSON.stringify(venta),
         });
         if (!response.ok) throw new Error('Error al procesar la venta');
+        return await handleResponse(response);
+    },
+
+    getMisCompras: async () => {
+        const response = await fetch(`${API_URL}ventas/mis-compras`, {
+            headers: getHeaders(),
+        });
+        if (!response.ok) throw new Error('Error al obtener las compras');
+        return await handleResponse(response);
+    },
+
+    createCheckoutSession: async (ventaId) => {
+        const response = await fetch(`${API_URL}stripe/checkout/${ventaId}`, {
+            method: 'POST',
+            headers: getHeaders(),
+        });
+        if (!response.ok) throw new Error('Error al crear sesión de pago');
+        return await handleResponse(response);
+    },
+
+    confirmarPago: async (id) => {
+        const response = await fetch(`${API_URL}ventas/confirmar-pago/${id}`, {
+            method: 'POST',
+            headers: getHeaders(),
+        });
+        if (!response.ok) throw new Error('Error al confirmar el pago');
         return await handleResponse(response);
     },
 

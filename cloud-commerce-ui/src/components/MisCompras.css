@@ -1,0 +1,135 @@
+.compras-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.compra-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.compra-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
+}
+
+.compra-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #f1f5f9;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.compra-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.compra-card-id {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #0f172a;
+}
+
+.compra-card-date {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.compra-card-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.compra-card-total {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #059669;
+}
+
+.compra-card-body {
+  padding: 16px 24px;
+}
+
+.compra-card-products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.compra-product-tag {
+  background: #f1f5f9;
+  color: #334155;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.detalle-producto-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;
+  gap: 16px;
+}
+
+.detalle-producto-row:last-child {
+  border-bottom: none;
+}
+
+.detalle-producto-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detalle-producto-nombre {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.detalle-producto-cant {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.detalle-producto-precios {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.detalle-producto-unit {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.detalle-producto-subtotal {
+  font-weight: 700;
+  color: #059669;
+  font-size: 1rem;
+}

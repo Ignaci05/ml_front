@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { apiService } from '../services/apiService';
 import './Carrito.css';
 
-export function Carrito({ isOpen, onClose, cartItems, onRemoveItem, onUpdateQuantity, onProcessSale, user }) {
+export function Carrito({ isOpen, onClose, cartItems, onRemoveItem, onUpdateQuantity, user }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const isAdmin = user?.role === 'ROLE_ADMIN';
@@ -31,11 +31,21 @@ export function Carrito({ isOpen, onClose, cartItems, onRemoveItem, onUpdateQuan
         }))
       };
 
-      await onProcessSale(venta);
-      onClose();
+      const ventaCreada = await apiService.createVenta(venta);
+
+      if (!ventaCreada || !ventaCreada.id) {
+        throw new Error('No se pudo crear la venta');
+      }
+
+      const checkout = await apiService.createCheckoutSession(ventaCreada.id);
+
+      if (!checkout || !checkout.url) {
+        throw new Error('No se pudo obtener la URL de pago');
+      }
+
+      window.location.href = checkout.url;
     } catch (err) {
-      setError('Error al procesar la venta');
-    } finally {
+      setError(err.message || 'Error al procesar la compra');
       setLoading(false);
     }
   };

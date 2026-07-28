@@ -12,6 +12,8 @@ import { CategoriaView } from './components/CategoriaView';
 import { Inventario } from './components/Inventario';
 import { Dashboard } from './components/Dashboard';
 import { Carrito } from './components/Carrito';
+import { MisCompras } from './components/MisCompras';
+import { VentasView } from './components/VentasView';
 import { apiService } from './services/apiService';
 
 function App() {
@@ -24,7 +26,8 @@ function App() {
 
   const isAdmin = user?.role === 'ROLE_ADMIN';
 
-  const adminTabs = ['clientes', 'proveedores', 'categorias', 'inventario', 'dashboard'];
+  const adminTabs = ['clientes', 'proveedores', 'categorias', 'inventario', 'dashboard', 'ventas'];
+  const clientTabs = ['mis-compras'];
 
   const handleTabChange = (tabId) => {
     if (adminTabs.includes(tabId) && !isAdmin) {
@@ -42,9 +45,15 @@ function App() {
       return <Catalogo onAddToCart={handleAddToCart} />;
     }
 
+    if (clientTabs.includes(activeTab) && isAdmin) {
+      return <Catalogo onAddToCart={handleAddToCart} />;
+    }
+
     switch (activeTab) {
       case 'catalogo':
         return <Catalogo onAddToCart={handleAddToCart} />;
+      case 'ventas':
+        return <VentasView />;
       case 'dashboard':
         return <Dashboard onNavigate={handleNavigateFromDashboard} />;
       case 'clientes':
@@ -55,6 +64,8 @@ function App() {
         return <CategoriaView />;
       case 'inventario':
         return <Inventario />;
+      case 'mis-compras':
+        return <MisCompras />;
       default:
         return <Catalogo onAddToCart={handleAddToCart} />;
     }
@@ -71,7 +82,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (user && adminTabs.includes(activeTab) && !isAdmin) {
+    if (!user) return;
+    if (adminTabs.includes(activeTab) && !isAdmin) {
+      setActiveTab('catalogo');
+    } else if (clientTabs.includes(activeTab) && isAdmin) {
       setActiveTab('catalogo');
     }
   }, [user, activeTab, isAdmin]);
@@ -151,15 +165,22 @@ function App() {
     );
   };
 
-  const handleProcessSale = async (venta) => {
-    try {
-      await apiService.procesarVenta(venta);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const isPaymentSuccess = params.get('payment') === 'success';
+    const ventaId = params.get('venta_id');
+
+    if (isPaymentSuccess && ventaId) {
+      window.history.replaceState({}, '', window.location.pathname);
       setCartItems([]);
-      alert('Venta procesada exitosamente');
-    } catch (error) {
-      throw new Error('Error al procesar la venta');
+
+      if (apiService.isAuthenticated()) {
+        apiService.confirmarPago(ventaId)
+          .then(() => alert('Pago exitoso! Tu compra ha sido procesada.'))
+          .catch(() => alert('Pago procesado. Espera la confirmación del pago.'));
+      }
     }
-  };
+  }, []);
 
   const cartTotalItems = cartItems.reduce((sum, item) => sum + item.cantidad, 0);
 
@@ -203,7 +224,6 @@ function App() {
         cartItems={cartItems}
         onRemoveItem={handleRemoveFromCart}
         onUpdateQuantity={handleUpdateQuantity}
-        onProcessSale={handleProcessSale}
         user={user}
       />
     </div>
