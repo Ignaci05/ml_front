@@ -171,13 +171,14 @@ function App() {
     const ventaId = params.get('venta_id');
 
     if (isPaymentSuccess && ventaId) {
-      window.history.replaceState({}, '', window.location.pathname);
+      window.history.replaceState({}, '', '/');
       setCartItems([]);
+      setActiveTab('catalogo');
 
       if (apiService.isAuthenticated()) {
         apiService.confirmarPago(ventaId)
           .then(() => alert('Pago exitoso! Tu compra ha sido procesada.'))
-          .catch(() => alert('Pago procesado. Espera la confirmación del pago.'));
+          .catch(() => alert('Tu pago fue recibido. Pronto se confirmará tu compra.'));
       }
     }
   }, []);
