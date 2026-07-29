@@ -14,6 +14,7 @@ import { Dashboard } from './components/Dashboard';
 import { Carrito } from './components/Carrito';
 import { MisCompras } from './components/MisCompras';
 import { VentasView } from './components/VentasView';
+import { PagoConfirmadoModal } from './components/PagoConfirmadoModal';
 import { apiService } from './services/apiService';
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isPagoConfirmadoOpen, setIsPagoConfirmadoOpen] = useState(false);
+  const [confirmedVentaId, setConfirmedVentaId] = useState(null);
   const [cartItems, setCartItems] = useState([]);
 
   const isAdmin = user?.role === 'ROLE_ADMIN';
@@ -171,14 +174,15 @@ function App() {
     const ventaId = params.get('venta_id');
 
     if (isPaymentSuccess && ventaId) {
-      window.history.replaceState({}, '', '/');
+      window.history.replaceState({}, '', window.location.pathname);
       setCartItems([]);
+      setConfirmedVentaId(ventaId);
+      setIsPagoConfirmadoOpen(true);
       setActiveTab('catalogo');
 
       if (apiService.isAuthenticated()) {
         apiService.confirmarPago(ventaId)
-          .then(() => alert('Pago exitoso! Tu compra ha sido procesada.'))
-          .catch(() => alert('Tu pago fue recibido. Pronto se confirmará tu compra.'));
+          .catch((err) => console.log('Pago registrado y procesado:', err));
       }
     }
   }, []);
@@ -226,6 +230,13 @@ function App() {
         onRemoveItem={handleRemoveFromCart}
         onUpdateQuantity={handleUpdateQuantity}
         user={user}
+      />
+      <PagoConfirmadoModal
+        isOpen={isPagoConfirmadoOpen}
+        onClose={() => setIsPagoConfirmadoOpen(false)}
+        ventaId={confirmedVentaId}
+        onGoToCatalog={() => setActiveTab('catalogo')}
+        onGoToMyOrders={() => setActiveTab('mis-compras')}
       />
     </div>
   );
