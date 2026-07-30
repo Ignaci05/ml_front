@@ -6,7 +6,7 @@ export function ImageUploader({ imageUrl, onImageChange }) {
   const [mode, setMode] = useState('upload'); // 'upload' | 'url'
   const [inputUrl, setInputUrl] = useState(imageUrl || '');
 
-  const compressImage = (file, maxWidth = 800, maxHeight = 800, quality = 0.75) => {
+  const compressImage = (file, maxWidth = 500, maxHeight = 500, quality = 0.7) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -35,6 +35,7 @@ export function ImageUploader({ imageUrl, onImageChange }) {
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
+          // Genera un DataURL comprimido ultra ligero (~25 KB)
           const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
           resolve(compressedDataUrl);
         };
@@ -56,36 +57,17 @@ export function ImageUploader({ imageUrl, onImageChange }) {
     setUploading(true);
 
     try {
-      // 1. Subida a servidor de imágenes gratuito permanente (freeimage.host)
-      const formData = new FormData();
-      formData.append('key', '6d207e02198a847aa98d0a2a901485a5');
-      formData.append('action', 'upload');
-      formData.append('source', file);
-
-      const res = await fetch('https://freeimage.host/api/1/upload', {
-        method: 'POST',
-        body: formData
-      });
-
-      const data = await res.json();
-
-      if (data && data.image && (data.image.display_url || data.image.url)) {
-        const permanentUrl = data.image.display_url || data.image.url;
-        onImageChange(permanentUrl);
-        setInputUrl(permanentUrl);
+      // Compresión HTML5 Canvas instantánea y optimizada (< 30 KB)
+      const compressedUrl = await compressImage(file);
+      if (compressedUrl) {
+        onImageChange(compressedUrl);
+        setInputUrl(compressedUrl);
       } else {
-        throw new Error('Respuesta no válida del servidor de imágenes');
+        alert('No se pudo optimizar la imagen.');
       }
     } catch (err) {
-      console.warn('Fallback a almacenamiento de datos comprimido:', err);
-      // Fallback: usar la versión comprimida optimizada
-      const compressed = await compressImage(file);
-      if (compressed) {
-        onImageChange(compressed);
-        setInputUrl(compressed);
-      } else {
-        alert('No se pudo procesar la imagen. Intenta con otra imagen o usa una URL directa.');
-      }
+      console.error('Error al procesar la imagen:', err);
+      alert('Ocurrió un error al procesar la imagen.');
     } finally {
       setUploading(false);
     }
@@ -137,7 +119,7 @@ export function ImageUploader({ imageUrl, onImageChange }) {
             {uploading ? (
               <div className="uploader-loading">
                 <div className="uploader-spinner"></div>
-                <span>Subiendo imagen a servidor CDN permanente...</span>
+                <span>Optimizando e insertando imagen...</span>
               </div>
             ) : (
               <div className="uploader-prompt">
@@ -147,7 +129,7 @@ export function ImageUploader({ imageUrl, onImageChange }) {
                   <polyline points="21 15 16 10 5 21"/>
                 </svg>
                 <span>Haz clic para seleccionar o subir una imagen</span>
-                <small>Se generará un enlace directo de imagen permanente</small>
+                <small>Se optimizará automáticamente para la web y MySQL</small>
               </div>
             )}
           </label>
