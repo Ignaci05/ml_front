@@ -6,6 +6,44 @@ export function ImageUploader({ imageUrl, onImageChange }) {
   const [mode, setMode] = useState('upload'); // 'upload' | 'url'
   const [inputUrl, setInputUrl] = useState(imageUrl || '');
 
+  const compressImage = (file, maxWidth = 800, maxHeight = 800, quality = 0.75) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > maxWidth) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width = Math.round((width * maxHeight) / height);
+              height = maxHeight;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+          resolve(compressedDataUrl);
+        };
+        img.onerror = () => resolve(null);
+      };
+      reader.onerror = () => resolve(null);
+    });
+  };
+
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -15,41 +53,42 @@ export function ImageUploader({ imageUrl, onImageChange }) {
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) {
-      alert('La imagen no debe superar los 10 MB');
-      return;
-    }
-
     setUploading(true);
 
     try {
-      // Intento 1: Subida mediante API libre de imágenes ImgBB
-      const formData = new FormData();
-      formData.append('image', file);
+      // 1. Comprimir la imagen en el cliente para máxima velocidad
+      const compressedDataUrl = await compressImage(file);
+      const targetData = compressedDataUrl || file;
 
-      // Usamos una clave de API pública y segura para la carga instantánea
-      const res = await fetch('https://api.imgbb.com/1/upload?key=81c15f9b4c0ad19a7ee1d2e11e00e82c', {
+      // 2. Intentar subida a servidor de imágenes público (tmpfiles)
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('https://tmpfiles.org/api/v1/upload', {
         method: 'POST',
         body: formData
       });
 
       const data = await res.json();
 
-      if (data && data.data && data.data.url) {
-        onImageChange(data.data.url);
-        setInputUrl(data.data.url);
+      if (data && data.status === 'success' && data.data && data.data.url) {
+        // Convertir URL de tmpfiles a URL directa de imagen
+        const directUrl = data.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+        onImageChange(directUrl);
+        setInputUrl(directUrl);
       } else {
-        throw new Error('Respuesta no válida del servidor de imágenes');
+        throw new Error('Respuesta no válida del servidor');
       }
     } catch (err) {
-      console.warn('Fallback a lectura local de datos:', err);
-      // Fallback: Convertir a DataURL optimizado si la red falla
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        onImageChange(reader.result);
-        setInputUrl(reader.result);
-      };
-      reader.readAsDataURL(file);
+      console.warn('Usando imagen comprimida optimizada:', err);
+      // Fallback: usar la versión comprimida optimizada
+      const compressed = await compressImage(file);
+      if (compressed) {
+        onImageChange(compressed);
+        setInputUrl(compressed);
+      } else {
+        alert('No se pudo procesar la imagen. Intenta con otra imagen o usa una URL directa.');
+      }
     } finally {
       setUploading(false);
     }
@@ -101,7 +140,7 @@ export function ImageUploader({ imageUrl, onImageChange }) {
             {uploading ? (
               <div className="uploader-loading">
                 <div className="uploader-spinner"></div>
-                <span>Subiendo imagen a la nube...</span>
+                <span>Procesando y optimizando imagen...</span>
               </div>
             ) : (
               <div className="uploader-prompt">
@@ -111,7 +150,7 @@ export function ImageUploader({ imageUrl, onImageChange }) {
                   <polyline points="21 15 16 10 5 21"/>
                 </svg>
                 <span>Haz clic para seleccionar o subir una imagen</span>
-                <small>PNG, JPG, WebP hasta 10MB</small>
+                <small>Se optimizará automáticamente para la web</small>
               </div>
             )}
           </label>
