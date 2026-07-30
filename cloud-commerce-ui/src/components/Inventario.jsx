@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { apiService } from '../services/apiService';
 import { Modal, DetailRow, DetailSection } from './Modal';
+import { ImageUploader } from './ImageUploader';
 import './Inventario.css';
 
 export const Inventario = () => {
@@ -158,11 +159,9 @@ export const Inventario = () => {
             required
             min="0"
           />
-          <input
-            type="text"
-            placeholder="URL de imagen"
-            value={formData.imagenUrl}
-            onChange={(e) => setFormData({ ...formData, imagenUrl: e.target.value })}
+          <ImageUploader
+            imageUrl={formData.imagenUrl}
+            onImageChange={(url) => setFormData({ ...formData, imagenUrl: url })}
           />
           <textarea
             placeholder="Descripción"
