@@ -56,31 +56,28 @@ export function ImageUploader({ imageUrl, onImageChange }) {
     setUploading(true);
 
     try {
-      // 1. Comprimir la imagen en el cliente para máxima velocidad
-      const compressedDataUrl = await compressImage(file);
-      const targetData = compressedDataUrl || file;
-
-      // 2. Intentar subida a servidor de imágenes público (tmpfiles)
+      // 1. Subida a servidor de imágenes gratuito permanente (freeimage.host)
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('key', '6d207e02198a847aa98d0a2a901485a5');
+      formData.append('action', 'upload');
+      formData.append('source', file);
 
-      const res = await fetch('https://tmpfiles.org/api/v1/upload', {
+      const res = await fetch('https://freeimage.host/api/1/upload', {
         method: 'POST',
         body: formData
       });
 
       const data = await res.json();
 
-      if (data && data.status === 'success' && data.data && data.data.url) {
-        // Convertir URL de tmpfiles a URL directa de imagen
-        const directUrl = data.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
-        onImageChange(directUrl);
-        setInputUrl(directUrl);
+      if (data && data.image && (data.image.display_url || data.image.url)) {
+        const permanentUrl = data.image.display_url || data.image.url;
+        onImageChange(permanentUrl);
+        setInputUrl(permanentUrl);
       } else {
-        throw new Error('Respuesta no válida del servidor');
+        throw new Error('Respuesta no válida del servidor de imágenes');
       }
     } catch (err) {
-      console.warn('Usando imagen comprimida optimizada:', err);
+      console.warn('Fallback a almacenamiento de datos comprimido:', err);
       // Fallback: usar la versión comprimida optimizada
       const compressed = await compressImage(file);
       if (compressed) {
@@ -140,7 +137,7 @@ export function ImageUploader({ imageUrl, onImageChange }) {
             {uploading ? (
               <div className="uploader-loading">
                 <div className="uploader-spinner"></div>
-                <span>Procesando y optimizando imagen...</span>
+                <span>Subiendo imagen a servidor CDN permanente...</span>
               </div>
             ) : (
               <div className="uploader-prompt">
@@ -150,7 +147,7 @@ export function ImageUploader({ imageUrl, onImageChange }) {
                   <polyline points="21 15 16 10 5 21"/>
                 </svg>
                 <span>Haz clic para seleccionar o subir una imagen</span>
-                <small>Se optimizará automáticamente para la web</small>
+                <small>Se generará un enlace directo de imagen permanente</small>
               </div>
             )}
           </label>
